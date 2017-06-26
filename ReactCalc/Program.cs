@@ -11,52 +11,100 @@ namespace ReactCalc
     {
         static void Main(string[] args)
         {
-            int x = 0;
-            int y = 0;
+            double x = 0;
+            double y = 1;
+            string com = "";
+            string result = "";
             var calc = new Calc();
 
-            if (args.Length == 2)
+            if (args.Length>0)
             {
-                x = ToInt(args[0], 83);
-                y = ToInt(args[1], 70);
+                com = args[0];
+                x = ToDouble(args[1]);
+                y = ToDouble(args[2]);
             }
             else
             {
-                #region Ввод данных
-                Console.WriteLine("Введите Х");
-                var strx = Console.ReadLine();
-
-                if (!int.TryParse(strx, out x))
-                {
-                    x = 100;
-                }
-
-                Console.WriteLine("Введите Y");
-                var stry = Console.ReadLine();
-
-                if (!int.TryParse(stry, out y))
-                {
-                    y = 100;
-                }
-                #endregion
+                Console.WriteLine("Справка появляется при любой ошибке при вводе аргументов (например, help).");
+                Console.WriteLine("Для выхода из приложения используйте команду exit");
+                Console.WriteLine("Введите команду:");
+                com = Console.ReadLine();
             }
 
-            var result = calc.Sum(x, y);
+            
+            if (com == "sqrt")
+            {
+                Console.WriteLine("Введите x:");
+                x = ToDouble(Console.ReadLine());
 
-            Console.WriteLine(string.Format("Сумма = {0}", result));
-            Console.ReadKey();
+                result = string.Format("Квадратный корень: {0}", calc.Sqrt(x));
+            } 
+            else if (com == "+" || com == "/" || com == "*") 
+            {
+                Console.WriteLine("Введите x:");
+                x = ToDouble(Console.ReadLine());
+
+                Console.WriteLine("Введите y:");
+                y = ToDouble(Console.ReadLine());
+
+                switch (com)
+                {
+                    case "+":
+                        result = string.Format("Сумма: {0}", calc.Sum(x, y));
+                        break;
+
+                    case "/":
+                        if (y != 0)
+                        {
+                            result = string.Format("Разница: {0}", calc.Div(x, y));
+                        }
+                        else
+                        {
+                            result = "На ноль делить нельзя!";
+                        }
+                        
+                        break;
+
+                    case "*":
+                        result = string.Format("Произведение: {0}", calc.Mpl(x, y));
+                        break;
+                }
+            }
+            else if (com == "exit")
+            {
+                return;
+            }
+            else
+            {
+                Console.WriteLine("Вы вызвали справку либо допустили ошибку при вводе параметров.");
+                Console.WriteLine("+ - сложение");
+                Console.WriteLine("* - умножение");
+                Console.WriteLine("/ - деление");
+                Console.WriteLine("sqrt - квадратный корень");
+                Console.WriteLine("exit - выход из приложения");
+                Main(args);
+            }
+
+            Console.WriteLine(result);
+
+            Main(args);
         }
 
 
-        private static int ToInt(string arg, int i = 100)
+        private static double ToDouble(string arg)
         {
-            int x;
-            if (!int.TryParse(arg, out x))
+            double x;
+            if (!double.TryParse(arg, out x))
             {
-                x = i;
+
+                Console.WriteLine("Введённый вами аргумент не верен. Приложение будет закрыто.");
+                Environment.Exit(0);
+
             }
 
             return x;
         }
+
+        
     }
 }
