@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FactorialLibrary;
+using ReactCalc.Models;
+using System.Reflection;
 
 namespace ReactCalc
 {
@@ -11,12 +14,92 @@ namespace ReactCalc
     /// </summary>
     public class Calc
     {
+
+        public IList<IOperation> Operations { get; private set; }
+
+        public Calc()
+        {
+            Operations = new List<IOperation>();
+            Operations.Add(new SumOperation());
+
+            // загружаем сборку
+            var assembly = Assembly.LoadFrom("FactorialLibrary.dll");
+            // получаем все тип/классы из неё
+            var types = assembly.GetTypes();
+            // перебираем типы
+            foreach (var t in types)
+            { 
+                // находим тех, кто реализует интерфейс IOperation
+                var interfs = t.GetInterfaces();
+                if (interfs.Contains(typeof(IOperation)))
+                {
+                    // создаём экземпляр найденного класса
+                    var instance = Activator.CreateInstance(t) as IOperation;
+                    if (instance != null)
+                    {
+                    // добавляем его в наш список операций
+                    Operations.Add(instance);
+                    }
+                }
+            }
+            //Operations.Add(new FactorialOperation());    
+        }
+
+        private double Execute(Func<IOperation, bool> selector, double[] args)
+        {
+
+            //находим операцию по имени
+            IOperation oper = Operations.FirstOrDefault(selector);
+
+            if (oper != null)
+            {
+                //вычисляем результат
+                var result = oper.Execute(args);
+                //отдаём пользователю
+                return result;
+            }
+
+            throw new NotSupportedException("Не найдена запрашиваемая операция");
+
+
+            //return Operations;
+        }
+        
+        public double Execute(string name, double[] args)
+        {
+            return Execute(i => i.Name == name, args);
+        }
+
+        public double Execute(long code, double[] args)
+        {
+            return Execute(i => i.Code == code, args);
+        }
+
+        public double Execute(Func<double[], double> fun, double[] args)
+        {
+            return fun(args);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         /// <summary>
         /// Сумма
         /// </summary>
         /// <param name="x">Слагаемое</param>
         /// <param name="y">Слагаемое</param>
         /// <returns>Число с плавающей точкой</returns>
+        [Obsolete("Используйте Execute(SUM). Данная функция будет удалена в версии 4.0")]
         public double Sum(double x, double y)
         {
             return x + y;
@@ -55,35 +138,10 @@ namespace ReactCalc
             return x * y;
         }
 
-        
-        //public void Act(string com, double x, double y = 1)
-        //{
-        //    switch (com) {
-        //        case "+":
-        //            Console.WriteLine(Convert.ToString(Sum(x, y)));
-        //            break;
-        //        case "sqrt":
-        //            Console.WriteLine(Convert.ToString(Sqrt(x)));
-        //            break;
-        //        case "/":
-        //            Console.WriteLine(Convert.ToString(Div(x, y)));
-        //            break;
-        //        case "*":
-        //            Console.WriteLine(Convert.ToString(Mpl(x, y)));
-        //            break;
-        //        default:
-        //            Console.WriteLine("Ошибка в введённых аргументах");
-        //            break;
-        //    }
-        //}
 
-        //public void Help()
-        //{
-        //    Console.WriteLine("+ - сложение");
-        //    Console.WriteLine("sqrt - квадратный корень");
-        //    Console.WriteLine("/ - деление");
-        //    Console.WriteLine("* - умножение");
-
-        //}
+        public double Pow(double x, double y)
+        {
+            return Math.Pow(x, y);
+        }
     }
 }
