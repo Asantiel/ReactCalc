@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace ReactCalc.Models
 {
-    public class SumOperation : Operation
+    public class DivOperation : Operation
     {
         public override long Code
         {
             get
             {
-                return 1;
+                return 3;
             }
         }
 
@@ -20,13 +20,13 @@ namespace ReactCalc.Models
         {
             get
             {
-                return "+";
+                return "/";
             }
         }
 
         public override double Execute(double[] args)
         {
-            return args.Sum();
+            return args[0] / args[1];
         }
     }
 }
