@@ -39,7 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\DivOperation.cs" />
     <Compile Include="Models\IOperation.cs" />
+    <Compile Include="Models\MplOperation.cs" />
     <Compile Include="Models\Operation.cs" />
     <Compile Include="Models\SumOperation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

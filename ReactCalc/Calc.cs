@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using FactorialLibrary;
 using ReactCalc.Models;
 using System.Reflection;
+using System.IO;
 
 namespace ReactCalc
 {
@@ -21,9 +22,18 @@ namespace ReactCalc
         {
             Operations = new List<IOperation>();
             Operations.Add(new SumOperation());
+            Operations.Add(new MplOperation());
+            Operations.Add(new DivOperation());
+
+            //var dllName = Directory.GetCurrentDirectory() + "\\FactorialLibrary.dll";
+            var dllName = "..\\..\\..\\AdditionalLib\\bin\\Debug\\AdditionalLib.dll";
+            if (!File.Exists( dllName))
+            {
+                return;
+            }
 
             // загружаем сборку
-            var assembly = Assembly.LoadFrom("FactorialLibrary.dll");
+            var assembly = Assembly.LoadFrom(dllName);
             // получаем все тип/классы из неё
             var types = assembly.GetTypes();
             // перебираем типы
@@ -65,15 +75,16 @@ namespace ReactCalc
             //return Operations;
         }
         
+        public double Execute(long code, double[] args)
+        {
+            return Execute(i => i.Code == code, args);
+        }
+
         public double Execute(string name, double[] args)
         {
             return Execute(i => i.Name == name, args);
         }
 
-        public double Execute(long code, double[] args)
-        {
-            return Execute(i => i.Code == code, args);
-        }
 
         public double Execute(Func<double[], double> fun, double[] args)
         {

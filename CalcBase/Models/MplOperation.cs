@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace ReactCalc.Models
 {
-    public class SumOperation : Operation
+    public class MplOperation : Operation
     {
         public override long Code
         {
             get
             {
-                return 1;
+                return 2;
             }
         }
 
@@ -20,13 +20,18 @@ namespace ReactCalc.Models
         {
             get
             {
-                return "+";
+                return "*";
             }
         }
 
         public override double Execute(double[] args)
         {
-            return args.Sum();
+            double result = 1;
+            foreach (int item in args)
+            {
+                result *= item;
+            }
+            return result;
         }
     }
 }
