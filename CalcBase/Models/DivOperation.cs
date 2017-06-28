@@ -28,5 +28,21 @@ namespace ReactCalc.Models
         {
             return args[0] / args[1];
         }
+
+        public override string DisplayName
+        {
+            get
+            {
+                return "Отношение ";
+            }
+        }
+
+        public override bool DisplayOper
+        {
+            get
+            {
+                return false;
+            }
+        }
     }
 }

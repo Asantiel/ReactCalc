@@ -7,7 +7,7 @@ using ReactCalc.Models;
 
 namespace AdditionalLib
 {
-    public class PowOperation : Operation
+    public class SqrtOperation : Operation
     {
         public override long Code
         {

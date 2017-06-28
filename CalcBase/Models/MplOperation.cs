@@ -33,5 +33,37 @@ namespace ReactCalc.Models
             }
             return result;
         }
+
+        public override string DisplayName
+        {
+            get
+            {
+                return "Умножение ";
+            }
+        }
+
+        public override string Author
+        {
+            get
+            {
+                return base.Author;
+            }
+        }
+
+        public override string Description
+        {
+            get
+            {
+                return "Умножение";
+            }
+        }
+
+        public override bool DisplayOper
+        {
+            get
+            {
+                return false;
+            }
+        }
     }
 }

@@ -14,7 +14,6 @@ namespace ReactCalc
             double x = 0;
             double y = 1;
             string com = "";
-            string result = "";
             var calc = new Calc();
 
             try
@@ -27,7 +26,7 @@ namespace ReactCalc
                 y = ToDouble(Console.ReadLine());
                 var res = calc.Execute(com, new[] { x, y });
 
-                Console.WriteLine(res);
+                Console.WriteLine(string.Format("{0}={1}", calc.LastOperationName, res));
 
                 Console.ReadKey();
             }
