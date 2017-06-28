@@ -24,7 +24,7 @@ namespace FactorialLibrary
             var x = args[0];
             var count = 1d;
             var result = 1d;
-            while (count < x)
+            while (count <= x)
             {
                 result *= count++;
             }
