@@ -22,9 +22,9 @@ namespace ReactCalc
         public Calc()
         {
             Operations = new List<IOperation>();
-            Operations.Add(new SumOperation());
-            Operations.Add(new MplOperation());
-            Operations.Add(new DivOperation());
+            Assembly ass = Assembly.GetAssembly(typeof(Calc));
+            Type[] types = ass.GetTypes();
+            OperAdd(types);
 
             //директория с расширениями
             var extsDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Extensions");
@@ -38,29 +38,15 @@ namespace ReactCalc
                 GetOperation(dllName);
             }
 
-            Assembly ass = Assembly.GetAssembly(typeof(Calc));
-
         }
 
-
-        private void GetOperation(string dllName)
+        private void OperAdd(Type[] types)
         {
-
-            if (!File.Exists(dllName))
-            {
-                return;
-            }
-
-            var searchInterface = typeof(IDisplayOperation);
-                
-
-            // загружаем сборку
-            var assembly = Assembly.LoadFrom(dllName);
-            // получаем все тип/классы из неё
-            var types = assembly.GetTypes();
+            var searchInterface = typeof(IOperation);
             // перебираем типы
             foreach (var t in types)
             {
+                if (t.IsInterface || t.IsAbstract) continue; 
                 // находим тех, кто реализует интерфейс IOperation
                 var interfs = t.GetInterfaces();
                 if (interfs.Contains(searchInterface))
@@ -70,11 +56,26 @@ namespace ReactCalc
                     if (instance != null)
                     {
                         // добавляем его в наш список операций
-                        Operations.Add(instance);
+                            Operations.Add(instance);
                     }
                 }
             }
-            //Operations.Add(new FactorialOperation());
+        }
+
+        private void GetOperation(string dllName)
+        {
+
+            if (!File.Exists(dllName))
+            {
+                return;
+            }
+
+            // загружаем сборку
+            var assembly = Assembly.LoadFrom(dllName);
+            // получаем все тип/классы из неё
+            var types = assembly.GetTypes();
+
+            OperAdd(types);
         }
 
         private double Execute(Func<IOperation, bool> selector, double[] args)
@@ -124,7 +125,7 @@ namespace ReactCalc
             double x;
             if (!double.TryParse(arg, out x))
             {
-                Console.WriteLine("Введённый вами аргумент не верен. Приложение будет закрыто.");
+                Console.WriteLine("Введённый вами аргумент не верен.");
                 //Environment.Exit(0);
 
             }

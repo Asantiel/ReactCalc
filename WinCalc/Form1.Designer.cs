@@ -34,11 +34,12 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lblDescription = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnCalc = new System.Windows.Forms.Button();
+            this.lblResult = new System.Windows.Forms.Label();
             this.tby = new System.Windows.Forms.TextBox();
             this.tbx = new System.Windows.Forms.TextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.lblResult = new System.Windows.Forms.Label();
-            this.btnCalc = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -101,6 +102,25 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Шаг 2 - Ввод данных";
             // 
+            // btnCalc
+            // 
+            this.btnCalc.Location = new System.Drawing.Point(12, 45);
+            this.btnCalc.Name = "btnCalc";
+            this.btnCalc.Size = new System.Drawing.Size(75, 23);
+            this.btnCalc.TabIndex = 3;
+            this.btnCalc.Text = "Вычислить";
+            this.btnCalc.UseVisualStyleBackColor = true;
+            this.btnCalc.Click += new System.EventHandler(this.btnCalc_Click);
+            // 
+            // lblResult
+            // 
+            this.lblResult.AutoSize = true;
+            this.lblResult.Location = new System.Drawing.Point(224, 22);
+            this.lblResult.Name = "lblResult";
+            this.lblResult.Size = new System.Drawing.Size(59, 13);
+            this.lblResult.TabIndex = 2;
+            this.lblResult.Text = "Результат";
+            // 
             // tby
             // 
             this.tby.Location = new System.Drawing.Point(118, 19);
@@ -125,24 +145,9 @@
             // 
             this.toolTip1.ToolTipTitle = "Подсказка";
             // 
-            // lblResult
+            // timer1
             // 
-            this.lblResult.AutoSize = true;
-            this.lblResult.Location = new System.Drawing.Point(224, 22);
-            this.lblResult.Name = "lblResult";
-            this.lblResult.Size = new System.Drawing.Size(59, 13);
-            this.lblResult.TabIndex = 2;
-            this.lblResult.Text = "Результат";
-            // 
-            // btnCalc
-            // 
-            this.btnCalc.Location = new System.Drawing.Point(12, 45);
-            this.btnCalc.Name = "btnCalc";
-            this.btnCalc.Size = new System.Drawing.Size(75, 23);
-            this.btnCalc.TabIndex = 3;
-            this.btnCalc.Text = "Вычислить";
-            this.btnCalc.UseVisualStyleBackColor = true;
-            this.btnCalc.Click += new System.EventHandler(this.btnCalc_Click);
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // frm_Main
             // 
@@ -157,7 +162,6 @@
             this.MinimumSize = new System.Drawing.Size(517, 435);
             this.Name = "frm_Main";
             this.Text = "Form1";
-            this.Activated += new System.EventHandler(this.frm_Main_Activated);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -179,6 +183,7 @@
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Label lblResult;
         private System.Windows.Forms.Button btnCalc;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 
