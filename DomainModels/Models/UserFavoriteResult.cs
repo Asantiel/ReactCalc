@@ -10,7 +10,7 @@ namespace DomainModels.Models
     {
         public long Id { get; set; }
 
-        public User User { get; set; }
+        public User Users { get; set; }
 
         public OperationResult Result { get; set; }
     }

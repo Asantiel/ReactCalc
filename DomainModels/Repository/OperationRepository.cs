@@ -8,23 +8,13 @@ using System.Data.SqlClient;
 
 namespace DomainModels.Repository
 {
-    public class UserRepository : IUserRepository
+    public class OperationRepository : IOperationRepository
     {
-        public User Create()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Delete(User user)
-        {
-            throw new NotImplementedException();
-        }
-
-        public User Get(long ID)
+        Operation IOperationRepository.Get(long id)
         {
             using (var connection = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=D:\Anuo\ReactCalc\DomainModels\App_Data\reactcalcdb.mdf;Integrated Security=True"))
             {
-                SqlCommand command = new SqlCommand("SELECT Id, FIO, Login FROM Users WHERE Id="+ID+";", connection);
+                SqlCommand command = new SqlCommand("SELECT Id, Name, FullName FROM Operation WHERE Id=" + id + ";", connection);
                 connection.Open();
 
                 SqlDataReader reader = command.ExecuteReader();
@@ -33,15 +23,14 @@ namespace DomainModels.Repository
                 {
                     while (reader.Read())
                     {
-                        var id = reader.GetInt64(0);
-                        var fio = reader.GetString(1);
-                        var login = reader.GetString(2);
+                        var name = reader.GetString(1);
+                        var fullname = reader.GetString(2);
 
-                        return new User()
+                        return new Operation()
                         {
                             Id = id,
-                            FIO = fio,
-                            Login = login
+                            Name = name,
+                            FullName = fullname
                         };
                     }
                 }
@@ -50,11 +39,11 @@ namespace DomainModels.Repository
             }
         }
 
-        public IEnumerable<User> GetAll()
+        IEnumerable<Operation> IOperationRepository.GetAll()
         {
             using (var connection = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=D:\Anuo\ReactCalc\DomainModels\App_Data\reactcalcdb.mdf;Integrated Security=True"))
             {
-                SqlCommand command = new SqlCommand("SELECT Id, FIO, Login FROM Users;",connection);
+                SqlCommand command = new SqlCommand("SELECT Id, Name, FullName FROM Operation;", connection);
                 connection.Open();
 
                 SqlDataReader reader = command.ExecuteReader();
@@ -64,14 +53,14 @@ namespace DomainModels.Repository
                     while (reader.Read())
                     {
                         var id = reader.GetInt64(0);
-                        var fio = reader.GetString(1);
-                        var login = reader.GetString(2);
+                        var name = reader.GetString(1);
+                        var fullname = reader.GetString(2);
 
-                        yield return new User()
+                        yield return new Operation()
                         {
                             Id = id,
-                            FIO = fio,
-                            Login = login
+                            Name = name,
+                            FullName = fullname
                         };
                     }
                 }
@@ -81,11 +70,6 @@ namespace DomainModels.Repository
                 }
                 reader.Close();
             }
-        }
-
-        public void Update(User user)
-        {
-            throw new NotImplementedException();
         }
     }
 }

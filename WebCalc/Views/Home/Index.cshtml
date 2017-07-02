@@ -1,23 +1,14 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Users";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
+<div class="container" style="margin-top:20px;">
+    <div class="row">
 
-<div class="row">
+        @foreach (var user in ViewBag.Users)
+        {
+           <p><a href="">@user.FIO</a></p>
+        }
 
-    @foreach (var user in ViewBag.Users)
-    {
-        <div class="col-md-4">
-            <h2>@user.FIO</h2>
-            <p>@user.Login</p>
-            <p>@user.Id</p>
-        </div>
-
-    }
-
+    </div>
 </div>

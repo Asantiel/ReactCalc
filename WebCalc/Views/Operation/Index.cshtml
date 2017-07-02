@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewBag.Title = "Operations";
+}
+
+<div class="container" style="margin-top:20px;">
+    <div class="row">
+
+        @foreach (var o in ViewBag.Operations)
+        {
+            <p><a href="">@o.FullName</a></p>
+        }
+
+    </div>
+</div>
+
