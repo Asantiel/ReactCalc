@@ -87,5 +87,10 @@ namespace DomainModels.Repository
         {
             throw new NotImplementedException();
         }
+
+        public bool Valid()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

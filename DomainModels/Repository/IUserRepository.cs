@@ -9,6 +9,8 @@ namespace DomainModels.Repository
 {
     public interface IUserRepository
     {
+        bool Valid();
+
         User Create();
 
         User Get(long id);

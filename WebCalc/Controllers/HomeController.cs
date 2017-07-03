@@ -13,13 +13,18 @@ namespace WebCalc.Controllers
 
         public HomeController()
         {
-            UserRepository = new UserRepository();
+            UserRepository = new DomainModels.EF.UserRepository();
         }
 
         public ActionResult Index()
         {
             ViewBag.Users = UserRepository.GetAll();
             return View();
+        }
+
+        public ActionResult View(long id)
+        {
+            return View(UserRepository.Get(id));
         }
     }
 }
