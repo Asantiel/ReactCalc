@@ -1,4 +1,5 @@
-﻿using DomainModels.Repository;
+﻿using DomainModels.Models;
+using DomainModels.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,37 @@ namespace WebCalc.Controllers
         public ActionResult View(long id)
         {
             return View(UserRepository.Get(id));
+        }
+
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Create([Bind(Include = "Login,Password,FIO")] User user)
+        {
+            user.Uid = Guid.NewGuid();
+            UserRepository.Create(user);
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult Delete(long id)
+        {
+            UserRepository.Delete(UserRepository.Get(id));
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult Update(long id)
+        {
+            return View("Create");
+        }
+
+        [HttpPost]
+        public ActionResult Update([Bind(Include = "Login,Password,FIO")] User user, Guid uid)
+        {
+            UserRepository.Update(user, uid);
+            return RedirectToAction("Index");
         }
     }
 }

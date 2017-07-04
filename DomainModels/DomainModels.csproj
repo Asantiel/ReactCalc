@@ -78,7 +78,6 @@
     <Compile Include="Repository\OperationRepository.cs" />
     <Compile Include="Repository\OperationResultRepository.cs" />
     <Compile Include="Repository\UserFavoriteResultRepository.cs" />
-    <Compile Include="Repository\UserRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

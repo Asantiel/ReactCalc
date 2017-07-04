@@ -35,5 +35,7 @@ namespace DomainModels.Models
         {
             get; set;
         }
+
+        public bool IsDeleted { get; set; }
     }
 }

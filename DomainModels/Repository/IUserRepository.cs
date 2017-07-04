@@ -9,13 +9,14 @@ namespace DomainModels.Repository
 {
     public interface IUserRepository
     {
+
         bool Valid();
 
-        User Create();
+        void Create(User user);
 
         User Get(long id);
 
-        void Update(User user);
+        void Update(User user, Guid uid);
 
         void Delete(User user);
 

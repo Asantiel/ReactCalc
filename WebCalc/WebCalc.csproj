@@ -183,6 +183,7 @@
     <Content Include="Views\OperationResult\Index.cshtml" />
     <Content Include="Views\UserFavoriteResult\Index.cshtml" />
     <Content Include="Views\Home\View.cshtml" />
+    <Content Include="Views\Home\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
