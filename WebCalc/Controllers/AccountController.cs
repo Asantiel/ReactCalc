@@ -31,7 +31,7 @@ namespace FormsAuthApp.Controllers
                 if (user != null)
                 {
                     FormsAuthentication.SetAuthCookie(model.Name, true);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Calc");
                 }
                 else
                 {
@@ -46,7 +46,7 @@ namespace FormsAuthApp.Controllers
         public ActionResult Logoff()
         {
             FormsAuthentication.SignOut();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login");
         }
     }
 }

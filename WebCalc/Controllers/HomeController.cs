@@ -8,13 +8,14 @@ using System.Web.Mvc;
 
 namespace WebCalc.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private IUserRepository UserRepository { get; set; }
 
-        public HomeController()
+        public HomeController(IUserRepository UserRepository)
         {
-            UserRepository = new DomainModels.EF.UserRepository();
+            this.UserRepository = UserRepository;
         }
 
         public ActionResult Index()
@@ -36,7 +37,6 @@ namespace WebCalc.Controllers
         [HttpPost]
         public ActionResult Create([Bind(Include = "Login,Password,FIO")] User user)
         {
-            user.Uid = Guid.NewGuid();
             UserRepository.Create(user);
             return RedirectToAction("Index");
         }
@@ -49,13 +49,14 @@ namespace WebCalc.Controllers
 
         public ActionResult Update(long id)
         {
+            var User = UserRepository.Get(id);
             return View("Create");
         }
 
         [HttpPost]
-        public ActionResult Update([Bind(Include = "Login,Password,FIO")] User user, Guid uid)
+        public ActionResult Update([Bind(Include = "Login,Password,FIO")] User user)
         {
-            UserRepository.Update(user, uid);
+            UserRepository.Update(user);
             return RedirectToAction("Index");
         }
     }

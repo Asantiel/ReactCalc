@@ -17,10 +17,12 @@ namespace DomainModels.EF
             this.context = new CalcContext();
         }
 
-        public void Create(User user)
+        public User Create(User user)
         {
-            context.Users.Add(user);
-            context.SaveChanges();
+            return new User
+            {
+                Uid = new Guid()
+            };
         }
 
         public void Delete(User user)
@@ -42,21 +44,22 @@ namespace DomainModels.EF
             return context.Users.Where(u => u.IsDeleted == false).ToList();
         }
 
-        public void Update(User user, Guid uid)
+        public void Update(User user)
         {
-            var dbuser = context.Users.FirstOrDefault(u => u.Uid == uid);
-            if (user.FIO != null)
-                dbuser.FIO = user.FIO;
-            if (user.Login != null)
-                dbuser.Login = user.Login;
-            if (user.Password != null)
-                dbuser.Password = user.Password;
+            context.Entry(user).State = user.Id == 0
+                ? System.Data.Entity.EntityState.Added
+                : System.Data.Entity.EntityState.Modified;
             context.SaveChanges();
         }
 
         public bool Valid()
         {
             throw new NotImplementedException();
+        }
+
+        public User GetByName(string name)
+        {
+            return context.Users.FirstOrDefault(u=>!u.IsDeleted && u.Login == name);
         }
     }
 }

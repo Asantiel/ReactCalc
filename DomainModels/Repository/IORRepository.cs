@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace DomainModels.Repository
 {
-    public interface IUserRepository : IEntityRepository<User>
+    public interface IORRepository : IEntityRepository<OperationResult>
     {
-        bool Valid();
-
-        User GetByName(string name);
+        double GetOldResult(long operationID, string inputData);
     }
 }
