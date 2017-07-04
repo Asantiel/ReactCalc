@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "Users";
+}
+@Html.ActionLink("Добавить", "Create")
+<div class="container" style="margin-top:20px;">
+    <div class="row">
+
+        @foreach (var user in ViewBag.Users as IEnumerable<DomainModels.Models.User>)
+        {
+            <p>@Html.ActionLink(user.FIO, "View", new { user.Id }) <sup>@Html.ActionLink("Удалить", "Delete", new { user.Id })</sup> <sup>@Html.ActionLink("Изменить", "Update", new { user.Id , user.Uid})</sup></p>
+        }
+
+    </div>
+</div>
