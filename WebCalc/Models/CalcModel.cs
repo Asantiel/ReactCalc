@@ -7,6 +7,7 @@ namespace WebCalc.Models
 {
     public class CalcModel
     {
+
         public string Operation { get; set; }
         
         public double? X { get; set; }

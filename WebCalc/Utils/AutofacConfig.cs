@@ -21,6 +21,7 @@ namespace WebCalc
             // регистрируем споставление типов
             builder.RegisterType<UserRepository>().As<IUserRepository>();
             builder.RegisterType<ORRepository>().As<IORRepository>();
+            builder.RegisterType<OperationRepository>().As<IOperationRepository>();
 
             // создаем новый контейнер с теми зависимостями, которые определены выше
             var container = builder.Build();

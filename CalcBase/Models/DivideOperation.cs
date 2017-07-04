@@ -15,7 +15,7 @@ namespace ReactCalc.Models
 
         public override string Name
         {
-            get { return "divide"; }
+            get { return "/"; }
         }
 
         public override double Execute(double[] args)

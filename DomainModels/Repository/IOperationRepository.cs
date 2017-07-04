@@ -7,10 +7,8 @@ using DomainModels.Models;
 
 namespace DomainModels.Repository
 {
-    public interface IOperationRepository
+    public interface IOperationRepository : IEntityRepository<Operation>
     {
-        Operation Get(long id);
-
-        IEnumerable<Operation> GetAll();
+        Operation GetByName(string name);
     }
 }

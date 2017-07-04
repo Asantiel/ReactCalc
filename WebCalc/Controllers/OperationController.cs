@@ -12,9 +12,9 @@ namespace WebCalc.Controllers
         private IOperationRepository OperationRepository { get; set; }
         // GET: Operation
 
-        public OperationController()
+        public OperationController(IOperationRepository OperationRepository)
         {
-            OperationRepository = new OperationRepository();
+            this.OperationRepository = OperationRepository;
         }
 
         public ActionResult Index()
