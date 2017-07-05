@@ -21,17 +21,15 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Пользователи", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Операции", "Index", "Operation")</li>
-                    <li>@Html.ActionLink("Операции пользоватлей", "Index", "OperationResult")</li>
-                    <li>@Html.ActionLink("Любимые Операции пользоватлей", "Index", "UserFavoriteResult")</li>
+                    <li>@Html.ActionLink("Операции пользователей", "Index", "OperationResult")</li>
+                    <li>
+                        @if (Request.IsAuthenticated)
+                        {
+                            @Html.ActionLink("Выйти", "Logoff", "Account")
+                        }
+                    </li>
                 </ul>
             </div>
-
-            @if (Request.IsAuthenticated)
-            {
-                @Html.ActionLink("Выйти", "Logoff", "Account")
-            }
         </div>
     </div>
     <div class="container body-content">

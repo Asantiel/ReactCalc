@@ -17,7 +17,7 @@ namespace DomainModels.EF
             this.context = new CalcContext();
         }
 
-        public OperationResult Create(OperationResult result)
+        public OperationResult Create()
         {
             return new OperationResult
             {
@@ -38,7 +38,6 @@ namespace DomainModels.EF
 
         public IEnumerable<OperationResult> GetAll()
         {
-
             return context.OperationResult.ToList();
         }
 
@@ -56,5 +55,26 @@ namespace DomainModels.EF
                 .FirstOrDefault(u => u.OperationId == operationID && u.InputData == inputData);
                 return rec != null ? rec.Result : double.NaN;
         }
+
+        public IEnumerable<OperationResult> GetByUser(User user)
+        {
+            if (user == null)
+            {
+                return new OperationResult[0];
+            }
+
+            return context.OperationResult.Where(or => or.AuthorId == user.Id).ToList();
+        }
+
+        public IQueryable<OperationResult> GetAll(Func<OperationResult, bool> condition)
+        {
+            throw new NotImplementedException();
+        }
+
+        public OperationResult GetRecord(long userId, long operId, string inputData)
+        {
+            return context.OperationResult.FirstOrDefault(o => o.AuthorId == userId && o.InputData == inputData && o.OperationId == operId);
+        }
     }
+
 }

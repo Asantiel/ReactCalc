@@ -16,55 +16,63 @@ namespace WebCalc.Controllers
         private Calc Calc { get; set; }
 
         private IORRepository ORRepository { get; set; }
+        private IUserRepository UserRepository { get; set; }
+        private IOperationRepository OperationRepository { get; set; }
 
-        private IUserRepository userrep { get; set; }
-
-        private IOperationRepository oprep { get; set; }
-
-        public CalcController(IORRepository orrepository, IUserRepository userrep, IOperationRepository oprep)
+        public CalcController(IORRepository orrepository, 
+            IUserRepository UserRepository, 
+            IOperationRepository OperationRepository)
         {
             Calc = new Calc();
             ORRepository = orrepository;
-            this.userrep = userrep;
-            this.oprep = oprep;
+            this.UserRepository = UserRepository;
+            this.OperationRepository = OperationRepository;
         }
 
         public ActionResult Index()
         {
             var model = new CalcModel();
-            ViewBag.Operations = new SelectList(oprep.GetAll(), "Name", "FullName");
+            ViewBag.Operations = new SelectList(OperationRepository.GetAll(), "Name", "FullName");
             return View(model);
         }
 
         [HttpPost]
         public ActionResult Index(CalcModel model)
         {
-            ViewBag.Operations = new SelectList(oprep.GetAll(), "Name", "FullName");
+            ViewBag.Operations = new SelectList(OperationRepository.GetAll(), "Name", "FullName");
             var operation = Calc.Operations.FirstOrDefault(o => o.Name == model.Operation);
+            var operID = OperationRepository.GetByName(operation.Name).Id;
             if (operation != null)
             {
-                var operId = oprep.GetByName(operation.Name).Id;
                 var inputData = string.Join(",", model.Arguments);
 
-                var OldResult = ORRepository.GetOldResult(operId, inputData);
+                var OldResult = ORRepository.GetOldResult(operID, inputData);
                 if (!double.IsNaN(OldResult))
                 {
+                    if (model.IsCompute)
+                    {
+                        // пересчитываем и присваеваем в model.Result
+                        OldResult = operation.Execute(model.Arguments);
+                        // находим польхователя и по входным данным и id операции ищем запись в ORRepository
+                        var currUserId = UserRepository.GetByName(User.Identity.Name).Id; 
+                        var t = ORRepository.GetRecord(currUserId, operID, inputData);
+                        // передаем изменения в ORRepository
+                        t.Result = OldResult;
+                        ORRepository.Update(t);
+                    }
                     model.Result = OldResult;
                 }
                 else
                 {
                     model.Result = operation.Execute(model.Arguments);
-
-                    var rec = ORRepository.Create(null);
-                    var currUser = userrep.GetByName(User.Identity.Name);
+                    
+                    var rec = ORRepository.Create();
+                    var currUser = UserRepository.GetByName(User.Identity.Name);
+                    rec.OperationId = OperationRepository.GetByName(operation.Name).Id;
                     rec.AuthorId = currUser.Id;
-
-                    //ХАК
-                    rec.OperationId = operId;
-
                     rec.ExecutionDate = DateTime.Now;
                     rec.ExecutionTime = new Random().Next(0, 100);
-                    rec.InputData = string.Join(",", model.Arguments);
+                    rec.InputData = inputData;
                     rec.Result = model.Result ?? Double.NaN;
 
                     ORRepository.Update(rec);

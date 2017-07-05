@@ -37,7 +37,7 @@ namespace WebCalc.Controllers
         [HttpPost]
         public ActionResult Create([Bind(Include = "Login,Password,FIO")] User user)
         {
-            UserRepository.Create(user);
+            UserRepository.CreateUser(user);
             return RedirectToAction("Index");
         }
 

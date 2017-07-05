@@ -10,5 +10,7 @@ namespace DomainModels.Repository
     public interface IORRepository : IEntityRepository<OperationResult>
     {
         double GetOldResult(long operationID, string inputData);
+        IEnumerable<OperationResult> GetByUser(User user);
+        OperationResult GetRecord(long userId, long operId, string inputData);
     }
 }

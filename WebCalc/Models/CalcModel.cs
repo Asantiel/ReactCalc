@@ -23,5 +23,6 @@ namespace WebCalc.Models
         }
         
         public double? Result { get; set; } 
+        public bool IsCompute { get; set; }
     }
 }

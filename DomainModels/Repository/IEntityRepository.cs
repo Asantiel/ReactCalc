@@ -8,7 +8,7 @@ namespace DomainModels.Repository
 {
     public interface IEntityRepository<T>
     {
-        T Create(T entity);
+        T Create();
 
         void Update(T entity);
 
@@ -17,5 +17,7 @@ namespace DomainModels.Repository
         void Delete(T user);
 
         IEnumerable<T> GetAll();
+
+        IQueryable<T> GetAll(Func<T, bool> condition);
     }
 }

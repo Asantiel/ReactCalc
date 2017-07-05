@@ -1,16 +1,174 @@
-﻿
+﻿@model IEnumerable<DomainModels.Models.OperationResult>
+
 @{
-    ViewBag.Title = "История операций";
+    ViewBag.Title = "Index";
+    var message = ViewBag.Message as string;
 }
 
-<div class="container" style="margin-top:20px;">
-    <div class="row">
+@if (!string.IsNullOrWhiteSpace(message))
+{
+    <p class="bg-warning" style="margin-top:20px">@(message)</p>
+}
 
-        @foreach (var or in ViewBag.OperationResults)
-        {
-            <p><a href="">@or.Operation.FullName</a></p>
-        }
+<div>
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#operations" aria-controls="home" role="tab" data-toggle="tab">Операции</a></li>
+        <li role="presentation"><a href="#favorite" aria-controls="profile" role="tab" data-toggle="tab">Избранное</a></li>
+    </ul>
 
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="operations">
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Author)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Operation)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.InputData)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Result)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ExecutionTime)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ExecutionDate)
+                    </th>
+                    <th></th>
+                </tr>
+
+                @if (Model == null) { return; }
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Author)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Operation)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.InputData)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Result)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ExecutionTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ExecutionDate)
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger" onclick="like(this, @item.Id)">@(item.IsLiked ? "DisLike" : "Like")</button>
+                            <sup id="likeinfo_@item.Id">@(item.IsLiked ? "Вам нравится эта операция" : "")</sup>
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="favorite">
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Author)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Operation)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.InputData)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Result)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ExecutionTime)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ExecutionDate)
+                    </th>
+                    <th></th>
+                </tr>
+
+                @if (Model == null) { return; }
+
+                @foreach (var item in Model)
+                {
+                    if (item.IsLiked)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Author)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Operation)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.InputData)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Result)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ExecutionTime)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ExecutionDate)
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-danger" onclick="like(this, @item.Id)">@(item.IsLiked ? "DisLike" : "Like")</button>
+                                <sup id="likeinfo_@item.Id">@(item.IsLiked ? "Вам нравится эта операция" : "")</sup>
+                            </td>
+                        </tr>
+                    }
+                }
+
+            </table>
+        </div>
     </div>
 </div>
 
+
+
+<script type="text/javascript">
+
+
+    $('#operations a').click(function (e) {
+        e.preventDefault()
+        $(this).tab('show')
+    })
+
+    $('#favorite a').click(function (e) {
+        e.preventDefault()
+        $(this).tab('show')
+    })
+
+    function like(elem, id) {
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("Like")",
+            data: { "id": id },
+            success: function (msg) {
+                if (msg.Success) {
+                    $(elem).html(msg.Name);
+
+                    if (msg.Name == "Like") {
+                        $('#likeinfo_' + id).html("");
+                    } else {
+                        $('#likeinfo_' + id).html("Вам нравится эта операция");
+                    }
+
+                } else {
+                    alert(msg.Error);
+                }
+            }
+        });
+    }
+</script>

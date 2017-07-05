@@ -17,7 +17,7 @@ namespace DomainModels.EF
             this.context = new CalcContext();
         }
 
-        public Operation Create(Operation entity)
+        public Operation Create()
         {
             throw new NotImplementedException();
         }
@@ -45,6 +45,11 @@ namespace DomainModels.EF
         public Operation GetByName(string name)
         {
             return context.Operations.FirstOrDefault(o => o.Name == name);
+        }
+
+        public IQueryable<Operation> GetAll(Func<Operation, bool> condition)
+        {
+            throw new NotImplementedException();
         }
     }
 }

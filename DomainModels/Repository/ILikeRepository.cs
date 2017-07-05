@@ -7,12 +7,7 @@ using System.Threading.Tasks;
 
 namespace DomainModels.Repository
 {
-    public interface IUserRepository : IEntityRepository<User>
+    public interface ILikeRepository : IEntityRepository<UserFavoriteResult>
     {
-        bool IsValid(string name, string pass);
-
-        User GetByName(string name);
-
-        void CreateUser(User user);
     }
 }

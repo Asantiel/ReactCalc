@@ -17,12 +17,9 @@ namespace DomainModels.EF
             this.context = new CalcContext();
         }
 
-        public User Create(User user)
+        public User Create()
         {
-            return new User
-            {
-                Uid = new Guid()
-            };
+            throw new NotImplementedException();
         }
 
         public void Delete(User user)
@@ -40,7 +37,6 @@ namespace DomainModels.EF
 
         public IEnumerable<User> GetAll()
         {
-
             return context.Users.Where(u => u.IsDeleted == false).ToList();
         }
 
@@ -52,14 +48,26 @@ namespace DomainModels.EF
             context.SaveChanges();
         }
 
-        public bool Valid()
+        public bool IsValid(string name, string pass)
         {
-            throw new NotImplementedException();
+            return context.Users.Count(i => i.Login == name && !i.IsDeleted && i.Password == pass) == 1;
         }
 
         public User GetByName(string name)
         {
             return context.Users.FirstOrDefault(u=>!u.IsDeleted && u.Login == name);
+        }
+
+        public void CreateUser(User user)
+        {
+            user.Uid = Guid.NewGuid();
+            context.Entry(user).State = System.Data.Entity.EntityState.Added;
+            context.SaveChanges();
+        }
+
+        public IQueryable<User> GetAll(Func<User, bool> condition)
+        {
+            throw new NotImplementedException();
         }
     }
 }

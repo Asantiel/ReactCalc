@@ -12,5 +12,7 @@ namespace DomainModels.Repository
         OperationResult Get(long id);
 
         IEnumerable<OperationResult> GetAll();
+
+        
     }
 }
